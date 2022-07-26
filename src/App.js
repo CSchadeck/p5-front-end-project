@@ -1,24 +1,65 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { Switch, Route } from "react-router-dom";
+import SignUp from "./components/SignUp";
+import Login from "./components/Login";
+import NavBar from "./components/NavBar";
+import Welcome from "./components/Welcome";
+
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState({ users: [] });
+
+
+  useEffect(() => {
+    fetchUsers()
+  }, []);
+
+  function fetchUsers(){
+    return fetch('https://obscure-headland-31666.herokuapp.com/users')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+
+        setUserData(data);
+      })
+    }
+     
+
+  useEffect(() => {
+    // auto-login
+    fetch('/me').then((r) => {
+      if (r.ok) {
+        r.json().then((user) => setUser(user));
+      }
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+       <NavBar user={user} setUser={setUser} />
+      <main>
+        {user ? (
+          <Switch>
+            <Route path="/">
+              <Welcome user={user}/>
+            </Route>
+          </Switch>
+        ) : (
+          <Switch>
+            <Route path="/signup">
+              <SignUp setUser={setUser} />
+            </Route>
+            <Route path="/login">
+              <Login setUser={setUser} />
+            </Route>
+            <Route path="/">
+              <Welcome />
+            </Route>
+          </Switch>
+        )}
+      </main>
+    </>
   );
 }
 
