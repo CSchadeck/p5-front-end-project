@@ -18,14 +18,14 @@ function NavBar({ user, setUser }) {
       <div>
         {user ? (
         <div>
-          <Link to="/requests">Requests</Link>
+          <Link to="https://obscure-headland-31666.herokuapp.com/requests">Requests</Link>
           <Link to="/Form">RequestForm</Link>
           <button onClick={handleLogoutClick}>Logout</button>
           </div>
         ) : (
           <>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">SignUp</Link>
+            <Link to="https://obscure-headland-31666.herokuapp.com/login">Login</Link>
+            <Link to="https://obscure-headland-31666.herokuapp.com/signup">SignUp</Link>
           </>
         )}
       </div>

@@ -8,10 +8,27 @@ import Welcome from "./components/Welcome";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState({ users: [] });
+
+
+  useEffect(() => {
+    fetchUsers()
+  }, []);
+
+  function fetchUsers(){
+    return fetch('https://obscure-headland-31666.herokuapp.com/users')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+
+        setUserData(data);
+      })
+    }
+     
 
   useEffect(() => {
     // auto-login
-    fetch("/me").then((r) => {
+    fetch('/me').then((r) => {
       if (r.ok) {
         r.json().then((user) => setUser(user));
       }
